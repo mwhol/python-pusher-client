@@ -14,7 +14,7 @@ class PusherProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, binary=False):
         try:
-            payload = json.loads(payload)
+            payload = json.loads(payload.decode('utf-8'))
         except ValueError:
             print("Cannot parse: {}".format(payload))
 
@@ -50,7 +50,7 @@ class PusherClient:
         self.app_key = app_key
         self.events = {}
         self.channels = {}
-        self.factory = WebSocketClientFactory("ws://ws.pusherapp.com:80/app/%s?client=python-twisted?version=1.0&protocol=4" % app_key)
+        self.factory = WebSocketClientFactory("wss://ws.pusherapp.com/app/%s?protocol=7&client=js&version=2.1.6&flash=false" % app_key)
         self.factory.protocol = PusherProtocol
         self.factory.singleton = None
         self.factory.pusher = self
@@ -98,5 +98,4 @@ class PusherClient:
         if not data:
             data = {}
         payload = {"event":event, "data":data}
-        self.factory.singleton.sendMessage(json.dumps(payload), False)
-
+        self.factory.singleton.sendMessage(json.dumps(payload).encode('utf-8'), False)
