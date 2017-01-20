@@ -1,3 +1,5 @@
+https://github.com/ysobolev/python-pusher-client
+
 # python-pusher-client
 Autobahn backed python pusher client
 
